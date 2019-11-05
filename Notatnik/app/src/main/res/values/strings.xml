@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Notatnik</string>
+    <string name="TextView">Something</string>
 </resources>
