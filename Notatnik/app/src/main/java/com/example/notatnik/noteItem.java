@@ -22,4 +22,7 @@ public class noteItem {
         return mTextContent;
     }
 
+    public void setmTextTopic(String mTextTopic) {
+        this.mTextTopic = mTextTopic;
+    }
 }
