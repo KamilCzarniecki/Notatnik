@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import java.util.ArrayList;
@@ -24,8 +25,9 @@ public class MainActivity extends AppCompatActivity
         mAdapter.setOnItemClickListener(new noteAdapter.onItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                mNotesList.get(position).setmTextTopic("clicked");
-                mAdapter.notifyItemChanged(position);
+                Intent intent= new Intent(MainActivity.this,NoteCard.class);
+                intent.putExtra("noteItem",mNotesList.get(position));
+                startActivity(intent);
             }
 
             @Override

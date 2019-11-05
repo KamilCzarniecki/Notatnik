@@ -6,4 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".NoteCard">
 
+    <TextView
+        android:id="@+id/topicTextCardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:text=""
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/contentTextCardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text=""
+        app:layout_constraintStart_toStartOf="@+id/topicTextCardView"
+        app:layout_constraintTop_toBottomOf="@+id/topicTextCardView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
