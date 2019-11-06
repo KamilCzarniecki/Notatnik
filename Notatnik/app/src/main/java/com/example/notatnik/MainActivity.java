@@ -1,5 +1,6 @@
 package com.example.notatnik;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -27,7 +29,7 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(int position) {
                 Intent intent= new Intent(MainActivity.this,NoteCard.class);
                 intent.putExtra("noteItem",mNotesList.get(position));
-                startActivity(intent);
+                startActivityForResult(intent,1);
             }
 
             @Override
@@ -64,5 +66,14 @@ public class MainActivity extends AppCompatActivity
     {
      mNotesList.remove(position);
      mAdapter.notifyItemRemoved(position);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==1 && resultCode==RESULT_OK){
+            String result=data.getStringExtra("topicBack");
+            Toast.makeText(getApplicationContext(),result, Toast.LENGTH_SHORT).show();
+        }
     }
 }
