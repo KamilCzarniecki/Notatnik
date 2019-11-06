@@ -17,10 +17,10 @@ public class NoteCard extends AppCompatActivity {
         setContentView(R.layout.activity_note_card);
 
         Intent intent=getIntent();
-        noteItem noteItem=intent.getParcelableExtra("noteItem");
-
+        final noteItem noteItem=intent.getParcelableExtra("noteItem");
+        final int position=intent.getIntExtra("position",0);
         String topicString=noteItem.getTextTopic();
-        String contentString=noteItem.getTextContent();
+        final String contentString=noteItem.getTextContent();
 
         final TextView topicTextView = findViewById(R.id.topicTextCardView);
         final TextView contentTextView = findViewById(R.id.contentTextCardView);
@@ -34,8 +34,9 @@ public class NoteCard extends AppCompatActivity {
             public void onClick(View v) {
                 //Toast.makeText(getApplicationContext(),topicTextView.getText().toString()+" "+contentTextView.getText().toString(),Toast.LENGTH_SHORT).show();
             Intent intentBack=new Intent();
-            String topicString=topicTextView.getText().toString();
-            intentBack.putExtra("topicBack",topicString);
+            noteItem noteItemBack= new noteItem(R.drawable.trash,topicTextView.getText().toString(),contentTextView.getText().toString());
+            intentBack.putExtra("itemBack",noteItemBack);
+            intentBack.putExtra("position", position);
             setResult(RESULT_OK,intentBack);
             finish();
             }

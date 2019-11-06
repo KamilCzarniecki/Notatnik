@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(int position) {
                 Intent intent= new Intent(MainActivity.this,NoteCard.class);
                 intent.putExtra("noteItem",mNotesList.get(position));
+                intent.putExtra("position",position);
                 startActivityForResult(intent,1);
             }
 
@@ -72,8 +73,11 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==1 && resultCode==RESULT_OK){
-            String result=data.getStringExtra("topicBack");
-            Toast.makeText(getApplicationContext(),result, Toast.LENGTH_SHORT).show();
+            noteItem changedItem=data.getParcelableExtra("itemBack");
+            int position = data.getIntExtra("position",0);
+            mNotesList.set(position,changedItem);
+            mAdapter.notifyItemChanged(position);
+            Toast.makeText(getApplicationContext(),"Note saved", Toast.LENGTH_SHORT).show();
         }
     }
 }
