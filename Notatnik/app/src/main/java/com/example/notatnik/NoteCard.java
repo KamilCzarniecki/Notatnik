@@ -12,7 +12,7 @@ import android.widget.Toast;
 public class NoteCard extends AppCompatActivity {
     TextView topicTextView;
     TextView contentTextView;
-    int position;
+    long id;
     Button saveButton;
     boolean isNew;
 
@@ -25,26 +25,26 @@ public class NoteCard extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intentBack=new Intent();
-                noteItem noteItemBack= new noteItem(R.drawable.trash,topicTextView.getText().toString(),contentTextView.getText().toString());
-                intentBack.putExtra("itemBack",noteItemBack);
-                intentBack.putExtra("position", position);
+                intentBack.putExtra("topic",topicTextView.getText().toString());
+                intentBack.putExtra("content",contentTextView.getText().toString());
+                intentBack.putExtra("id", id);
                 intentBack.putExtra("isNew",isNew);
                 setResult(RESULT_OK,intentBack);
                 finish();
             }
         });
         Intent intent=getIntent();
-        final noteItem noteItem=intent.getParcelableExtra("noteItem");
         isNew = intent.getBooleanExtra("isNew",false);
-        position=intent.getIntExtra("position",0);
-        String topicString=noteItem.getTextTopic();
-        final String contentString=noteItem.getTextContent();
+        id = intent.getLongExtra("id",0);
+        String topic = intent.getStringExtra("topic");
+        String content = intent.getStringExtra("content");
+
 
         topicTextView = findViewById(R.id.topicTextCardView);
         contentTextView = findViewById(R.id.contentTextCardView);
 
-        topicTextView.setText(topicString);
-        contentTextView.setText(contentString);
+        topicTextView.setText(topic);
+        contentTextView.setText(content);
 
     }
 

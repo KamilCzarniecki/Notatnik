@@ -1,5 +1,7 @@
 package com.example.notatnik;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,23 +15,26 @@ import java.util.ArrayList;
 
 public class noteAdapter extends RecyclerView.Adapter<noteAdapter.noteViewHolder>
 {
-    private ArrayList mNoteItemList;
+
     private onItemClickListener mListener;
+    private Context mContext;
+    private Cursor mCursor;
     public interface onItemClickListener
     {
-        void onItemClick(int position);
-        void onDeleteClick(int position);
+        void onItemClick(long id);
+        void onDeleteClick(long id);
     }
     public void  setOnItemClickListener(onItemClickListener listener){
         mListener=listener;
     }
+
     public static class noteViewHolder extends RecyclerView.ViewHolder
     {
         public ImageView mImageView;
         public TextView mTextView1;
         public TextView mTextView2;
 
-        public noteViewHolder(View itemView, final onItemClickListener listener){
+        public noteViewHolder(final View itemView, final onItemClickListener listener){
             super(itemView);
             mImageView=itemView.findViewById(R.id.noteImageView);
             mTextView1=itemView.findViewById(R.id.topicTextView);
@@ -38,10 +43,9 @@ public class noteAdapter extends RecyclerView.Adapter<noteAdapter.noteViewHolder
                 @Override
                 public void onClick(View v) {
                     if(listener !=null){
-                        int position=getAdapterPosition();
-                        if(position!=RecyclerView.NO_POSITION){
-                            listener.onItemClick(position);
-                        }
+                        long id =(long) itemView.getTag();
+                            listener.onItemClick(id);
+
                     }
                 }
             });
@@ -49,18 +53,18 @@ public class noteAdapter extends RecyclerView.Adapter<noteAdapter.noteViewHolder
                 @Override
                 public void onClick(View v) {
                     if(listener !=null){
-                        int position=getAdapterPosition();
-                        if(position!=RecyclerView.NO_POSITION){
-                            listener.onDeleteClick(position);
-                        }
+                        long id =(long) mImageView.getTag();
+                        listener.onDeleteClick(id);
+
                     }
                 }
             });
         }
     }
-    public noteAdapter(ArrayList<noteItem> noteList )
+    public noteAdapter(Context context, Cursor cursor)
     {
-        mNoteItemList=noteList;
+        mContext=context;
+        mCursor=cursor;
     }
     @NonNull
     @Override
@@ -72,14 +76,30 @@ public class noteAdapter extends RecyclerView.Adapter<noteAdapter.noteViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull noteViewHolder holder, int position) {
-    noteItem currentItem = (noteItem) mNoteItemList.get(position);
-    holder.mImageView.setImageResource(currentItem.getImageResource());
-    holder.mTextView1.setText(currentItem.getTextTopic());
-    holder.mTextView2.setText(currentItem.getTextContent());
+        if(!mCursor.moveToPosition(position)){
+            return;
+        }
+        String topic = mCursor.getString(mCursor.getColumnIndex(NotesContract.NoteEntry.COLUMN_TOPIC));
+        String content = mCursor.getString(mCursor.getColumnIndex(NotesContract.NoteEntry.COLUMN_CONTENT));
+        long id = mCursor.getLong(mCursor.getColumnIndex(NotesContract.NoteEntry._ID));
+        holder.mImageView.setImageResource(R.drawable.trash);
+        holder.mTextView1.setText(topic);
+        holder.mTextView2.setText(content);
+        holder.mImageView.setTag(id);
+        holder.itemView.setTag(id);
     }
 
     @Override
     public int getItemCount() {
-        return mNoteItemList.size();
+        return mCursor.getCount();
+    }
+    public void swapCursor(Cursor newCursor){
+        if(mCursor!=null){
+            mCursor.close();
+        }
+        mCursor=newCursor;
+        if(newCursor!=null){
+            notifyDataSetChanged();
+        }
     }
 }
