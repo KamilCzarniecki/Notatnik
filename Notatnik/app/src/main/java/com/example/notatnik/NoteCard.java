@@ -36,6 +36,7 @@ public class NoteCard extends AppCompatActivity {
         Intent intent=getIntent();
         isNew = intent.getBooleanExtra("isNew",false);
         id = intent.getLongExtra("id",0);
+        Toast.makeText(this,String.valueOf(id), Toast.LENGTH_SHORT).show();
         String topic = intent.getStringExtra("topic");
         String content = intent.getStringExtra("content");
 

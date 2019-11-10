@@ -21,7 +21,7 @@ public class noteAdapter extends RecyclerView.Adapter<noteAdapter.noteViewHolder
     private Cursor mCursor;
     public interface onItemClickListener
     {
-        void onItemClick(long id);
+        void onItemClick(int position, long id);
         void onDeleteClick(long id);
     }
     public void  setOnItemClickListener(onItemClickListener listener){
@@ -43,8 +43,9 @@ public class noteAdapter extends RecyclerView.Adapter<noteAdapter.noteViewHolder
                 @Override
                 public void onClick(View v) {
                     if(listener !=null){
-                        long id =(long) itemView.getTag();
-                            listener.onItemClick(id);
+                        int position = getAdapterPosition();
+                        long id = (long) itemView.getTag();
+                            listener.onItemClick(position, id);
 
                     }
                 }

@@ -44,18 +44,22 @@ public class MainActivity extends AppCompatActivity
                 String content= "";
                 intent.putExtra("topic",topic);
                 intent.putExtra("content",content);
-                intent.putExtra("position",0);
                 intent.putExtra("isNew", true);
                 startActivityForResult(intent,1);
             }
         });
         mAdapter.setOnItemClickListener(new noteAdapter.onItemClickListener() {
             @Override
-            public void onItemClick(long id) {
+            public void onItemClick(int position, long id) {
                 Intent intent= new Intent(MainActivity.this,NoteCard.class);
-                intent.putExtra()
+                Cursor tempCursor=getAllItems();
+                tempCursor.moveToPosition(position);
+                String topic = tempCursor.getString(tempCursor.getColumnIndex(NotesContract.NoteEntry.COLUMN_TOPIC));
+                String content =tempCursor.getString(tempCursor.getColumnIndex(NotesContract.NoteEntry.COLUMN_CONTENT));
                 intent.putExtra("id",id);
                 intent.putExtra("isNew",false);
+                intent.putExtra("topic",topic);
+                intent.putExtra("content",content);
                 startActivityForResult(intent,1);
             }
 
@@ -77,7 +81,7 @@ public class MainActivity extends AppCompatActivity
 
     }
     public void deleteNote(long id)
-    {
+    { Toast.makeText(MainActivity.this,String.valueOf(id), Toast.LENGTH_SHORT).show();
      mDatabase.delete(NotesContract.NoteEntry.TABLE_NAME, NotesContract.NoteEntry._ID + "=" + id,null);
      mAdapter.swapCursor(getAllItems());
     }
@@ -88,10 +92,9 @@ public class MainActivity extends AppCompatActivity
         if(requestCode==1 && resultCode==RESULT_OK){
             String topic =  data.getStringExtra("topic");
             String content=data.getStringExtra("content");
-            long id = data.getLongExtra("position",0);
+            long id = data.getLongExtra("id",0);
             boolean isNew = data.getBooleanExtra("isNew",false);
             if(isNew==false) {
-
                 mDatabase.delete(NotesContract.NoteEntry.TABLE_NAME, NotesContract.NoteEntry._ID + "=" + id,null);
             }
             ContentValues cv = new ContentValues();
@@ -99,7 +102,7 @@ public class MainActivity extends AppCompatActivity
             cv.put(NotesContract.NoteEntry.COLUMN_CONTENT,content);
             mDatabase.insert(NotesContract.NoteEntry.TABLE_NAME,null,cv);
             mAdapter.swapCursor(getAllItems());
-            Toast.makeText(getApplicationContext(),"Note saved", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),"Note saved", Toast.LENGTH_SHORT).show();
         }
     }
     private Cursor getAllItems(){
