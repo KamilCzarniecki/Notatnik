@@ -15,7 +15,8 @@ import java.util.ArrayList;
 
 public class noteAdapter extends RecyclerView.Adapter<noteAdapter.noteViewHolder>
 {
-
+    public static final int SPAN_COUNT_LIST = 1;
+    public static final int SPAN_COUNT_GRID = 2;
     private onItemClickListener mListener;
     private Context mContext;
     private Cursor mCursor;

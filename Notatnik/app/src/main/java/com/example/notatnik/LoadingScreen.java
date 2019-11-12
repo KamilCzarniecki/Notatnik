@@ -18,7 +18,7 @@ public class LoadingScreen extends AppCompatActivity {
                 .withFullScreen()
                 .withSplashTimeOut(5000)
                 .withTargetActivity(MainActivity.class)
-                .withBackgroundResource(R.drawable.background_note)
+                .withBackgroundResource(R.color.black)
                 .withBeforeLogoText("Notebook")
                 .withAfterLogoText("Easy notes")
                 .withLogo(R.drawable.iconi);
