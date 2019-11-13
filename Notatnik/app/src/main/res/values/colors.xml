@@ -6,4 +6,5 @@
     <color name="paperColor">#E9F5A840</color>
     <color name="black">#000000</color>
     <color name="transparent">#00000000</color>
+    <color name="grey">#FFAFAAAA</color>
 </resources>
